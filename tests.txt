@@ -1,0 +1,29 @@
+const testSmallest = {
+    '0': [
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0
+    ],
+    '1': [
+        0, 0, 0, 0, 0,
+        0, 0, 1, 0
+    ],
+    '7': [
+        0, 1, 0, 0, 0,
+        0, 0, 0, 0
+    ]
+}
+
+console.log(findSmallestConnectedComponent(testSmallest));
+console.log(isConnected(testSmallest))
+console.log(ms(graph))
+
+
+const matrix2 = [
+    [0,0,0,1],
+    [0,0,0,1],
+    [0,0,0,0],
+    [1,1,0,0],
+];
+const graph2 = createGraph(matrix2);
+console.log(graph2)
+console.log(findSmallestConnectedComponent(graph2));

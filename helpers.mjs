@@ -1,8 +1,7 @@
-import {dVerticesObject, Graph} from "./types";
-import {dfs} from "./smallest_component";
+import {findSmallestConnectedComponent} from "./smallest_component.mjs";
 
-export var createGraph = (matrix: number[][]): Graph => {
-    var graph: Graph = {}
+export var createGraph = (matrix) => {
+    var graph = {}
     for (let key in matrix) {
         graph[key] = matrix[key];
     }
@@ -10,29 +9,22 @@ export var createGraph = (matrix: number[][]): Graph => {
     return graph;
 }
 
-export var powerGraph = (G: Graph): number => {
+export var powerGraph = (G) => {
     return Object.keys(G).length;
 }
-export var isConnected = (G: Graph): boolean => {
-    var size = Object.keys(G).length
-    var components: number[] = new Array(size).fill(0);
-    var num = 0;
 
-    for (let v in G) {
-        if (!components[Number(v)]) dfs(v, ++num, G, components);
-    }
-
-    return num <= 1;
+export var isConnected = (G) => {
+   return findSmallestConnectedComponent(G).length === Object.keys(G).length;
 }
 
-export var getNeighbors = (G: Graph, vertex: string): any[] => {
+export var getNeighbors = (G, vertex) => {
     return G[vertex].map((_, index) => _
-        ? String(index)
+        ? index
         : 0
     ).filter(_ => _ !== 0);
 }
 
-export var get2Neighbors = (G: Graph, vertex: string): any[] => {
+export var get2Neighbors = (G, vertex) => {
     var neigboirs = getNeighbors(G, vertex);
 
     var neigboirs2 = [];
@@ -48,14 +40,14 @@ export var get2Neighbors = (G: Graph, vertex: string): any[] => {
     return neigboirs2;
 }
 
-export var getAB = (G: Graph) => {
-    var dObj: dVerticesObject = {};
+export var getAB = (G) => {
+    var dObj = {};
     for (let vertex in G) {
         dObj[vertex] = (G[vertex].filter(el => el).length);
     }
 
     var dA = 10;
-    var A: string = "0";
+    var A = "0";
     for (let vertex in dObj) {
         if (dA >= dObj[vertex]) {
             dA = dObj[vertex];
@@ -63,9 +55,8 @@ export var getAB = (G: Graph) => {
         }
     }
 
-    var neighbors: any = {}
+    var neighbors = {}
     for (let i = 0; i < G[A].length; i++) {
-        var row = G[A];
         if (G[A][i]) neighbors[i] = G[i].filter(el => el).length;
     }
 
@@ -81,18 +72,17 @@ export var getAB = (G: Graph) => {
     return [{vertex: A, d: dA}, {vertex: B, d: dB}, neighbors];
 }
 
-export function deleteVertex(G: Graph, vertex: string) {
-    console.log(G);
-
-    delete G[vertex];
-    for (let i = 0; i < Object.keys(G).length; i++) {
-        G[i][Number(vertex)] = 0;
+export function deleteVertex(G, vertex) {
+    for (const i_vertex of Object.keys(G)) {
+        G[i_vertex][vertex] = 0;
     }
-    console.log(G);
+    delete G[vertex];
 
     return G;
 }
 
-// function sortByEdges() {
-//
-// }
+export function sortVertexSet(G, vertexSet) {
+    vertexSet.sort((a,b) => {
+        return G[a].filter(el => el).length - G[b].filter(el => el).length;
+    })
+}
