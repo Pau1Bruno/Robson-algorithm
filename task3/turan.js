@@ -1,4 +1,5 @@
 function generateTuranGraph(verCount, partitions) {
+    // if (verCount === 3 && partitions === 3)
     let verPerPart1, verPerPart2;
 
     if (verCount % partitions === 0) {
@@ -12,6 +13,7 @@ function generateTuranGraph(verCount, partitions) {
     const rem2 = partitions - rem1;
 
     const partitionSizes = Array(rem1).fill(verPerPart1).concat(Array(rem2).fill(verPerPart2));
+    console.log(partitionSizes)
 
     const graph = {};
 
@@ -38,8 +40,8 @@ function generateTuranGraph(verCount, partitions) {
     return graph;
 }
 
-const totalVertices = 12; // общее количество вершин
-const partitionsCount = 3; // количество долей
+const totalVertices = 3; // общее количество вершин
+const partitionsCount = 1; // количество долей
 const turanGraph = generateTuranGraph(totalVertices, partitionsCount);
 console.log("Граф Турана:");
 console.log(turanGraph);

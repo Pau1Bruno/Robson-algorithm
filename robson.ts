@@ -22,7 +22,6 @@ var graph = createGraph(matrix);
 var ms = (G: Graph): any => {
 
     if (!isConnected(G)) {
-        console.log(Object.entries({}))
         console.log("not connected")
         var C = findSmallestConnectedComponent(G);
         console.log("C", C)

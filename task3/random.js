@@ -1,6 +1,6 @@
 function generateRandomGraph(verCount, edgeDensity) {
     if (edgeDensity < 0 || edgeDensity > 1) {
-        throw ("Рёберная плотность неправильно задана")
+        throw ("Рёберная плотность неправильно задана");
     }
     let alreadyExist = 0;
     const graph = {};
