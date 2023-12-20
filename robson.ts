@@ -1,4 +1,4 @@
-import {createGraph, dGraphVertices, get2Neighbors, getNeighbors, isConnected, powerGraph} from "./helpers";
+import {createGraph, deleteVertex, getAB, getNeighbors, isConnected, powerGraph} from "./helpers";
 import {Graph} from "./types";
 import {findSmallestConnectedComponent} from "./smallest_component";
 
@@ -19,10 +19,6 @@ var MIS: number[] = [];
 
 var graph = createGraph(matrix);
 
-function ms2(second: { [p: string]: number[] }, _2Neighbors: any[]) {
-    return 0;
-}
-
 var ms = (G: Graph): any => {
 
     if (!isConnected(G)) {
@@ -41,55 +37,53 @@ var ms = (G: Graph): any => {
 
     if (powerGraph(G) <= 1) return powerGraph(G);
 
-    var [A, B, neigbors] = dGraphVertices(G);
+    var [A, B, neigborsA] = getAB(G);
 
 
     if (A.d === 1) {
-        for (const vertex of Object.keys(neigbors)) {
-            delete G[vertex];
+        for (const vertex of Object.keys(neigborsA)) {
+            deleteVertex(G, vertex);
         }
-        delete G[A.vertex];
+        deleteVertex(G, A.vertex);
         return 1 + ms(G);
     }
 
     if (A.d === 2) {
-        var B1: string = Object.keys(neigbors)[1];
+        var B1: string = Object.keys(neigborsA)[1];
         if (G[B.vertex][Number(B1)]) {
-            for (const vertex of Object.keys(neigbors)) {
-                delete G[vertex];
+            for (const vertex of Object.keys(neigborsA)) {
+                deleteVertex(G, vertex);
             }
-            delete G[A.vertex];
+            deleteVertex(G, A.vertex);
             return 1 + ms(G);
         }
-        console.log(B, B1, neigbors)
+
         var first = {...G};
-        console.log(getNeighbors(first, B.vertex))
-        console.log(getNeighbors(first, B1))
         for (const vertex of getNeighbors(first, B.vertex)) {
-            delete first[vertex];
+            deleteVertex(first, "0");
         }
         delete first[B.vertex];
         for (const vertex of getNeighbors(first, B1)) {
             delete first[vertex];
         }
         delete first[B1];
-        console.log("first",first)
+        console.log("first", first)
         var second = {...G};
         console.log(getNeighbors(second, A.vertex))
         for (const vertex of getNeighbors(second, A.vertex)) {
             delete second[vertex];
         }
         delete second[A.vertex];
-        console.log("second",second)
+        console.log("second", second)
         console.log("before return -------------------------------")
         return Math.max(
             2 + ms(first),
-            1 + ms2(second, get2Neighbors(G, A.vertex))
+            // 1 + ms2(second, get2Neighbors(G, A.vertex))
         )
     }
 
     if (A.d === 3) {
-        for (const vertex of Object.keys(neigbors)) {
+        for (const vertex of Object.keys(neigborsA)) {
             delete G[vertex];
         }
         delete G[A.vertex];
@@ -101,8 +95,14 @@ var ms = (G: Graph): any => {
         // )
     }
 }
+console.log(getNeighbors(graph, "8"))
+// ms(graph)
+// console.log(get2Neighbors(graph, "8"))
 
-ms(graph)
+function ms2(G: Graph,) {
+    return 0;
+}
+
 
 // const matrix2: number[][] = [
 //     [0,0,0,1],

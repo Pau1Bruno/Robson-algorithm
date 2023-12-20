@@ -25,14 +25,14 @@ export var isConnected = (G: Graph): boolean => {
     return num <= 1;
 }
 
-export var getNeighbors = (G: Graph, vertex: string) => {
+export var getNeighbors = (G: Graph, vertex: string): any[] => {
     return G[vertex].map((_, index) => _
         ? String(index)
         : 0
-    ).filter(_ => _);
+    ).filter(_ => _ !== 0);
 }
 
-export var get2Neighbors = (G: Graph, vertex: string) => {
+export var get2Neighbors = (G: Graph, vertex: string): any[] => {
     var neigboirs = getNeighbors(G, vertex);
 
     var neigboirs2 = [];
@@ -48,7 +48,7 @@ export var get2Neighbors = (G: Graph, vertex: string) => {
     return neigboirs2;
 }
 
-export var dGraphVertices = (G: Graph) => {
+export var getAB = (G: Graph) => {
     var dObj: dVerticesObject = {};
     for (let vertex in G) {
         dObj[vertex] = (G[vertex].filter(el => el).length);
@@ -80,3 +80,19 @@ export var dGraphVertices = (G: Graph) => {
 
     return [{vertex: A, d: dA}, {vertex: B, d: dB}, neighbors];
 }
+
+export function deleteVertex(G: Graph, vertex: string) {
+    console.log(G);
+
+    delete G[vertex];
+    for (let i = 0; i < Object.keys(G).length; i++) {
+        G[i][Number(vertex)] = 0;
+    }
+    console.log(G);
+
+    return G;
+}
+
+// function sortByEdges() {
+//
+// }
